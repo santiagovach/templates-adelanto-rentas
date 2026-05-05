@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Templates Adelanto de Rentas – MoradaUno</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-dark: #671E75;
+    --purple-mid: #772583;
+    --lila: #B14EB5;
+    --lavender: #E2ACD7;
+    --light-gray: #E6E7E8;
+    --near-black: #12051A;
+    --dark-gray: #6B6B78;
+    --white: #ffffff;
+    --soft-bg: #FAF7FB;
+    --teal: #00C7B1;
+    --section-happy: #671E75;
+    --section-reject: #3D1A42;
+    --section-extra: #772583;
+    --section-internal: #1A3A6B;
+    --section-payments: #006B5E;
+    --section-process: #2E2E2E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #F4F0F6; color: var(--near-black); font-size: 13px; line-height: 1.65; }
+
+  .topbar { background: var(--near-black); display: flex; align-items: center; padding: 0 24px; height: 52px; position: sticky; top: 0; z-index: 200; border-bottom: 2px solid var(--purple-dark); }
+  .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 18px; color: white; }
+  .topbar-logo span { color: var(--lila); }
+  .topbar-sep { width: 1px; height: 20px; background: #444; margin: 0 16px; }
+  .topbar-title { font-size: 12px; color: #aaa; }
+  .topbar-spacer { flex: 1; }
+  .topbar-tag { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.3px; text-transform: uppercase; background: rgba(255,255,255,0.08); color: #bbb; border: 1px solid rgba(255,255,255,0.1); }
+
+  .layout { display: flex; min-height: calc(100vh - 52px); }
+
+  .sidebar { width: 248px; flex-shrink: 0; background: white; border-right: 1px solid #e2d9e8; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; padding: 16px 0 24px; }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--lavender); border-radius: 4px; }
+
+  .nav-section { margin-bottom: 4px; }
+  .nav-section-header { display: flex; align-items: center; gap: 8px; padding: 8px 14px 4px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: white; margin: 2px 10px 0; border-radius: 6px; }
+  .nav-section-header .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .hdr-happy { background: var(--section-happy); }
+  .hdr-reject { background: var(--section-reject); }
+  .hdr-extra { background: var(--section-extra); }
+  .hdr-internal { background: var(--section-internal); }
+  .hdr-payments { background: var(--section-payments); }
+  .hdr-process { background: var(--section-process); }
+
+  .nav-link { display: flex; align-items: flex-start; gap: 8px; padding: 6px 14px 6px 20px; font-size: 11.5px; color: var(--dark-gray); text-decoration: none; border-left: 2px solid transparent; transition: all 0.12s; line-height: 1.35; }
+  .nav-link:hover { color: var(--purple-dark); background: var(--soft-bg); border-left-color: var(--lila); }
+  .nav-link.active { color: var(--purple-dark); background: #F3E8F6; border-left-color: var(--purple-dark); font-weight: 600; }
+  .nav-link .nav-num { font-size: 10px; font-weight: 700; color: var(--lila); min-width: 14px; margin-top: 1px; }
+
+  .main { flex: 1; padding: 28px 32px 48px; max-width: 900px; }
+
+  .page-header { margin-bottom: 28px; }
+  .page-header h1 { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--purple-dark); margin-bottom: 6px; }
+  .page-header p { font-size: 12px; color: var(--dark-gray); }
+  .page-header p .var-hint { color: var(--lila); font-style: italic; }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 14px; scroll-margin-top: 68px; }
+  .section-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .icon-happy { background: #F3E8F6; }
+  .icon-reject { background: #F5E8E8; }
+  .icon-extra { background: #EEE8F6; }
+  .icon-internal { background: #E8EDF6; }
+  .icon-payments { background: #E8F5F3; }
+  .icon-process { background: #EEEEEE; }
+  .section-header-text h2 { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--near-black); margin-bottom: 1px; }
+  .section-header-text p { font-size: 11px; color: var(--dark-gray); }
+
+  .section-rule { height: 2px; background: linear-gradient(to right, var(--purple-dark), transparent); margin-bottom: 14px; border-radius: 2px; }
+  .rule-reject { background: linear-gradient(to right, #8B2020, transparent); }
+  .rule-extra { background: linear-gradient(to right, var(--purple-mid), transparent); }
+  .rule-internal { background: linear-gradient(to right, #1A3A6B, transparent); }
+  .rule-payments { background: linear-gradient(to right, #006B5E, transparent); }
+  .rule-process { background: linear-gradient(to right, #555, transparent); }
+
+  .template-card { background: white; border-radius: 12px; border: 1px solid #e2d9e8; margin-bottom: 16px; overflow: hidden; scroll-margin-top: 68px; box-shadow: 0 1px 3px rgba(103,30,117,0.06); transition: box-shadow 0.15s; }
+  .template-card:hover { box-shadow: 0 3px 12px rgba(103,30,117,0.1); }
+
+  .card-header { padding: 13px 18px; display: flex; align-items: center; gap: 10px; }
+  .card-header-happy { background: var(--section-happy); }
+  .card-header-reject { background: var(--section-reject); }
+  .card-header-extra { background: var(--section-extra); }
+  .card-header-internal { background: var(--section-internal); }
+  .card-header-payments { background: var(--section-payments); }
+
+  .card-num { width: 24px; height: 24px; background: rgba(255,255,255,0.18); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+  .card-header-text { flex: 1; }
+  .card-header-text h3 { font-family: 'DM Serif Display', serif; font-size: 13.5px; color: white; font-weight: 400; margin-bottom: 2px; line-height: 1.25; }
+  .card-recipient { font-size: 10px; color: rgba(255,255,255,0.65); display: flex; align-items: center; gap: 4px; }
+
+  .copy-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+  .copy-btn:hover { background: rgba(255,255,255,0.25); }
+  .copy-btn.copied { background: rgba(0,199,177,0.3); border-color: var(--teal); color: #80FFE8; }
+
+  .subject-bar { background: #FAF7FB; border-bottom: 1px solid #EDE4F0; padding: 8px 18px; font-size: 11px; color: var(--purple-dark); display: flex; align-items: baseline; gap: 6px; }
+  .subject-label { font-weight: 700; color: var(--dark-gray); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .card-body { padding: 18px 20px; }
+
+  .email-p { font-size: 12.5px; line-height: 1.75; color: var(--near-black); margin-bottom: 10px; }
+  .var { color: var(--lila); font-style: italic; font-weight: 500; }
+
+  .email-ul { margin: 6px 0 10px 18px; }
+  .email-ul li { font-size: 12.5px; line-height: 1.7; color: var(--near-black); margin-bottom: 3px; }
+
+  .info-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; border-radius: 8px; overflow: hidden; border: 1px solid #EDE4F0; }
+  .info-table tr:nth-child(odd) td { background: #FAF7FB; }
+  .info-table tr:nth-child(even) td { background: white; }
+  .info-table td { padding: 7px 12px; border: 1px solid #EDE4F0; }
+  .info-table td:first-child { font-weight: 600; color: var(--near-black); width: 42%; }
+  .info-table td:last-child { color: var(--lila); font-style: italic; }
+
+  .note-box { background: #FAF7FB; border-left: 3px solid var(--lavender); padding: 8px 12px; font-size: 11.5px; color: var(--dark-gray); font-style: italic; margin: 8px 0; border-radius: 0 6px 6px 0; line-height: 1.6; }
+  .warning-box { background: #FFF8E6; border: 1.5px solid #E6A800; border-radius: 8px; padding: 10px 14px; font-size: 12.5px; font-weight: 600; color: #7A5500; margin: 10px 0; }
+  .link-box { background: #F0EBF5; border-radius: 8px; border: 1px solid #DDD0E8; padding: 10px 14px; font-size: 12.5px; color: var(--purple-dark); margin: 10px 0; display: flex; align-items: center; gap: 8px; }
+  .link-box .link-var { color: var(--lila); font-style: italic; }
+
+  .process-accordion { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 24px; overflow: hidden; }
+  .process-toggle { width: 100%; background: var(--near-black); color: white; border: none; padding: 14px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; text-align: left; transition: background 0.15s; }
+  .process-toggle:hover { background: #2a2a2a; }
+  .process-toggle .toggle-arrow { margin-left: auto; transition: transform 0.2s; font-size: 11px; opacity: 0.6; }
+  .process-toggle.open .toggle-arrow { transform: rotate(180deg); }
+  .process-body { display: none; padding: 20px; border-top: 1px solid #eee; }
+  .process-body.open { display: block; }
+
+  .process-step { display: flex; gap: 14px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f0e8f2; }
+  .process-step:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-num { width: 26px; height: 26px; background: var(--purple-dark); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .step-content h4 { font-size: 12px; font-weight: 600; color: var(--near-black); margin-bottom: 4px; }
+  .step-content p { font-size: 11.5px; color: var(--dark-gray); line-height: 1.6; }
+  .step-content ul { margin: 4px 0 0 14px; }
+  .step-content ul li { font-size: 11.5px; color: var(--dark-gray); margin-bottom: 2px; }
+  .step-sub { margin-top: 6px; padding-left: 12px; border-left: 2px solid var(--lavender); }
+  .step-sub p { font-size: 11px; color: var(--dark-gray); margin-bottom: 2px; }
+
+  .scroll-progress { position: fixed; top: 52px; left: 0; height: 2px; background: var(--lila); z-index: 300; transition: width 0.1s; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="topbar">
+  <div class="topbar-logo">Morada<span>Uno</span></div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-title">Templates · Adelanto de Rentas</div>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-tag">16 templates</div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-header hdr-happy"><div class="dot" style="background:#E2ACD7"></div>Happy Path</div>
+      <a class="nav-link" href="#hp1"><span class="nav-num">1</span>Primer contacto</a>
+      <a class="nav-link" href="#hp2"><span class="nav-num">2</span>Recepción de documentos Buró</a>
+      <a class="nav-link" href="#hp3"><span class="nav-num">3</span>Cierre por nula respuesta</a>
+      <a class="nav-link" href="#hp4"><span class="nav-num">4</span>Aprobación Buró – Next steps</a>
+      <a class="nav-link" href="#hp5"><span class="nav-num">5</span>Primera revisión de contrato</a>
+      <a class="nav-link" href="#hp6"><span class="nav-num">6</span>Listo para firmar</a>
+      <a class="nav-link" href="#hp7"><span class="nav-num">7</span>Compleción de firma</a>
+      <a class="nav-link" href="#hp8"><span class="nav-num">8</span>Confirmación de pago a LL</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-header hdr-reject"><div class="dot" style="background:#F4A0A0"></div>Rechazos</div>
+      <a class="nav-link" href="#rj1"><span class="nav-num">1</span>No aprobación en Buró</a>
+      <a class="nav-link" href="#rj2"><span class="nav-num">2</span>No elegible por ticket activo</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-header hdr-extra"><div class="dot" style="background:#DDB8E8"></div>Casos extraordinarios</div>
+      <a class="nav-link" href="#ex1"><span class="nav-num">1</span>Upgrade Protección M3+</a>
+      <a class="nav-link" href="#ex2"><span class="nav-num">2</span>No aplicable MLegal (CON upgrade)</a>
+      <a class="nav-link" href="#ex3"><span class="nav-num">3</span>Upgrade pagado, falta firmar</a>
+      <a class="nav-link" href="#ex4"><span class="nav-num">4</span>Firmado, falta pagar</a>
+      <a class="nav-link" href="#ex5"><span class="nav-num">5</span>CM firmado y pagado</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-header hdr-internal"><div class="dot" style="background:#A8C0F0"></div>Interno</div>
+      <a class="nav-link" href="#in1"><span class="nav-num">1</span>Solicitud de transferencia</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-header hdr-payments"><div class="dot" style="background:#80E8D8"></div>Recepción de pagos</div>
+      <a class="nav-link" href="#pg1"><span class="nav-num">1</span>Confirmación de mensualidad</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-header hdr-process"><div class="dot" style="background:#BBBBBB"></div>Proceso</div>
+      <a class="nav-link" href="#proceso"><span class="nav-num">↓</span>Ver proceso completo</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Templates · Adelanto de Rentas</h1>
+      <p>Variables del agente en <span class="var-hint">(cursiva morada)</span> · Campos fijos en negro</p>
+    </div>
+
+    <!-- ══════════ HAPPY PATH ══════════ -->
+    <div class="section-header">
+      <div class="section-icon icon-happy">✅</div>
+      <div class="section-header-text"><h2>Happy Path</h2><p>Flujo principal de contratación exitosa</p></div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="template-card" id="hp1">
+      <div class="card-header card-header-happy">
+        <div class="card-num">1</div>
+        <div class="card-header-text"><h3>Primer contacto</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp1')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Adelanto de rentas</div>
+      <div class="card-body" id="body-hp1">
+        <p class="email-p">Estimado/a <span class="var">(nombre_propietario)</span>,</p>
+        <p class="email-p">Mi nombre es <span class="var">(nombre del agente)</span> y me comunico de parte de MoradaUno con el propósito de dar inicio al proceso de contratación del Adelanto de Renta que solicitaste, correspondiente al contrato de arrendamiento número <span class="var">(Contrato)</span>.</p>
+        <p class="email-p">A continuación te confirmo los datos de tu solicitud:</p>
+        <table class="info-table">
+          <tr><td>Meses solicitados</td><td><span class="var">(número de meses)</span></td></tr>
+          <tr><td>Monto de renta del contrato</td><td><span class="var">(renta) MXN</span></td></tr>
+          <tr><td>Monto total</td><td><span class="var">(número de meses × renta) MXN</span></td></tr>
+          <tr><td>Monto total a transferir *</td><td><span class="var">(monto_a_transferir) MXN</span></td></tr>
+        </table>
+        <div class="note-box">* El Monto Total a Transferir corresponde al Monto Total con un descuento del 16% por concepto de comisión por apertura.</div>
+        <p class="email-p">Como primer paso para continuar con el proceso de contratación, es necesario realizar una validación crediticia, para la cual requerimos que nos compartas los siguientes documentos:</p>
+        <ul class="email-ul">
+          <li>INE o Pasaporte</li>
+          <li>Constancia de Situación Fiscal</li>
+          <li>Comprobante de domicilio</li>
+          <li>Autorización de Buró de Crédito <em>(documento adjunto al presente correo)</em></li>
+        </ul>
+        <div class="note-box">** El documento de Autorización de Buró debe completarse con todos los datos requeridos, firmarse en físico y hacernos llegar una fotografía o escaneo del mismo ya firmado.</div>
+        <p class="email-p">Una vez que recibamos la documentación completa, te confirmaremos los siguientes pasos a seguir.</p>
+        <p class="email-p">Quedo a tus órdenes ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp2">
+      <div class="card-header card-header-happy">
+        <div class="card-num">2</div>
+        <div class="card-header-text"><h3>Recepción de documentos Buró</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp2')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Documentación recibida</div>
+      <div class="card-body" id="body-hp2">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmo la recepción de tu documentación. Hemos dado inicio al análisis correspondiente con nuestro equipo de riesgo para continuar con el proceso de contratación.</p>
+        <p class="email-p">En cuanto contemos con el resultado de dicha revisión, te comunicaremos los pasos a seguir según sea el caso.</p>
+        <p class="email-p">Quedo al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp3">
+      <div class="card-header card-header-happy">
+        <div class="card-num">3</div>
+        <div class="card-header-text"><h3>Cierre por nula respuesta de LL</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp3')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Cierre de proceso</div>
+      <div class="card-body" id="body-hp3">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Esperamos que te encuentres muy bien. Nos comunicamos debido a que, tras varios intentos de contacto, no hemos recibido respuesta de tu parte en relación con el proceso de contratación del Servicio de Adelanto de Rentas / Crédito Simple que habías solicitado.</p>
+        <p class="email-p">Con base en lo anterior, procederemos a dar por concluido el proceso y suspenderemos la comunicación por el momento. Sin embargo, si en algún momento deseas retomarlo o tienes alguna duda sobre nuestro producto, no dudes en contactarnos y con gusto te atenderemos.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp4">
+      <div class="card-header card-header-happy">
+        <div class="card-num">4</div>
+        <div class="card-header-text"><h3>Aprobación de Buró – Next steps</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp4')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Resultado de análisis crediticio</div>
+      <div class="card-body" id="body-hp4">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Nos complace informarte que el análisis de Buró de Crédito correspondiente a tu solicitud arrojó un resultado aprobatorio, por lo que podemos continuar con el proceso de contratación del Adelanto de Rentas / Crédito Simple.</p>
+        <p class="email-p">Como siguiente paso, procederemos a generar el contrato correspondiente y te lo compartiremos a la brevedad para que tengas oportunidad de revisarlo. Una vez que nos confirmes tu VoBo, continuaremos con el proceso de firma electrónica.</p>
+        <p class="email-p">Quedo al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp5">
+      <div class="card-header card-header-happy">
+        <div class="card-num">5</div>
+        <div class="card-header-text"><h3>Primera revisión de contrato</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp5')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Revisión de Contrato de Crédito Simple</div>
+      <div class="card-body" id="body-hp5">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Dando seguimiento al proceso de contratación, te compartimos el Contrato de Crédito Simple / Adelanto de Renta en su versión preliminar, mismo que encontrarás adjunto al presente correo.</p>
+        <p class="email-p">Te solicitamos que lo revises con detenimiento y, una vez que confirmes que todos los datos son correctos y no tengas dudas al respecto, nos lo hagas saber para proceder con el envío de la liga de firma electrónica.</p>
+        <p class="email-p">Quedo al pendiente de tu confirmación o comentarios.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp6">
+      <div class="card-header card-header-happy">
+        <div class="card-num">6</div>
+        <div class="card-header-text"><h3>Listo para firmar</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp6')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Liga de firma electrónica</div>
+      <div class="card-body" id="body-hp6">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te compartimos la liga para completar la firma electrónica del Contrato de Crédito Simple / Adelanto de Renta:</p>
+        <div class="link-box">🔗 <strong>Liga de firma electrónica:</strong>&nbsp;<span class="link-var var">(link_de_firma)</span></div>
+        <p class="email-p">Antes de proceder, te pedimos considerar los siguientes puntos:</p>
+        <ul class="email-ul">
+          <li>La liga cuenta con <strong>3 intentos</strong> para completar el proceso de firma correctamente. En caso de agotar los intentos, deberás esperar 10 minutos antes de reintentar.</li>
+          <li>Es necesario contar con una identificación oficial vigente (INE o Pasaporte).</li>
+          <li>El proceso de firma consta de tres etapas: fotografía de identificación oficial, fotografía tipo selfie y registro de firma.</li>
+        </ul>
+        <p class="email-p">Una vez completada tu firma, nuestro representante legal procederá a suscribir el contrato. Posteriormente, realizaremos la transferencia correspondiente en un plazo máximo de 24 horas y te haremos llegar el contrato debidamente firmado.</p>
+        <p class="email-p">Quedo al pendiente ante cualquier duda durante el proceso.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp7">
+      <div class="card-header card-header-happy">
+        <div class="card-num">7</div>
+        <div class="card-header-text"><h3>Compleción de firma de contrato</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp7')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Firma registrada exitosamente</div>
+      <div class="card-body" id="body-hp7">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmamos que tu firma en el Contrato de Crédito Simple / Adelanto de Rentas fue registrada exitosamente. Encontrarás el documento en formato PDF adjunto al presente correo.</p>
+        <p class="email-p">Como siguiente paso, procederemos a realizar la transferencia correspondiente en un plazo máximo de 24 horas a partir del envío de este mensaje, y te compartiremos el comprobante de pago una vez que este haya sido emitido.</p>
+        <p class="email-p">Quedamos al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="hp8">
+      <div class="card-header card-header-happy">
+        <div class="card-num">8</div>
+        <div class="card-header-text"><h3>Confirmación de pago a LL</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-hp8')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Confirmación de transferencia</div>
+      <div class="card-body" id="body-hp8">
+        <p class="email-p">Estimado/a <span class="var">(nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmamos que la transferencia correspondiente a la contratación del Crédito Simple / Adelanto de Rentas relacionado a tu contrato <span class="var">(Contrato)</span> fue realizada el día de hoy. Encontrarás el comprobante de pago adjunto al presente correo.</p>
+        <p class="email-p">A partir de este momento no es necesario realizar ninguna acción adicional de tu parte. Te recordamos las condiciones de pago estipuladas en el contrato:</p>
+        <table class="info-table">
+          <tr><td>Día de pago mensual</td><td><span class="var">día (xx) de cada mes</span></td></tr>
+          <tr><td>Fecha del primer pago</td><td><span class="var">(fecha_primer_pago)</span></td></tr>
+          <tr><td>Monto total a recuperar</td><td><span class="var">$(monto_total_sin_comisión_por_apertura) MXN</span></td></tr>
+        </table>
+        <div class="warning-box">⚠️ Es importante cumplir con las fechas de pago estipuladas en el contrato para evitar cargos adicionales por pago tardío.</div>
+        <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <!-- ══════════ RECHAZOS ══════════ -->
+    <div class="section-header">
+      <div class="section-icon icon-reject">🚫</div>
+      <div class="section-header-text"><h2>Rechazos</h2><p>Comunicación cuando el proceso no puede avanzar</p></div>
+    </div>
+    <div class="section-rule rule-reject"></div>
+
+    <div class="template-card" id="rj1">
+      <div class="card-header card-header-reject">
+        <div class="card-num">1</div>
+        <div class="card-header-text"><h3>No aprobación en Buró de Crédito</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-rj1')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Resultado de análisis crediticio</div>
+      <div class="card-body" id="body-rj1">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Tras llevar a cabo la revisión de la información crediticia disponible, te comunicamos que por el momento no es posible continuar con la contratación del Adelanto de Rentas / Crédito Simple solicitado. Este producto está sujeto a criterios de evaluación internos y nos reservamos el derecho de autorizar cada solicitud.</p>
+        <p class="email-p">En caso de que cuentes con información adicional o más reciente sobre tu historial crediticio que consideres relevante para la revisión, con gusto la analizamos. De no ser así, daremos por concluido el proceso en este momento.</p>
+        <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="rj2">
+      <div class="card-header card-header-reject">
+        <div class="card-num">2</div>
+        <div class="card-header-text"><h3>NO elegible por ticket activo en portafolio</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-rj2')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Estado de tu solicitud de Adelanto de Rentas</div>
+      <div class="card-body" id="body-rj2">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Dando seguimiento al proceso de solicitud del Adelanto de Rentas / Crédito Simple, queremos informarte que uno de los requisitos indispensables para contratar el producto es no contar con un proceso de mediación y/o cobranza activo, ya que esto representa incertidumbre en la continuidad del Contrato de Arrendamiento.</p>
+        <p class="email-p">En este caso, hemos identificado que el contrato <span class="var">(Contrato)</span> cuenta actualmente con un reporte activo en el que se está atendiendo <span class="var">(tipo_de_conflicto_resumido)</span>.</p>
+        <p class="email-p">Una vez que nuestro equipo haya resuelto el caso de manera que el Contrato de Arrendamiento continúe con normalidad, podremos dar inicio al proceso de contratación del Adelanto de Rentas / Crédito Simple por los meses que desees y que se encuentren dentro de nuestros términos y condiciones.</p>
+        <p class="email-p">Por el momento daremos por concluido el seguimiento actual y estaremos al pendiente del estatus de tu reporte para evaluar la posibilidad de continuar con tu solicitud.</p>
+        <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <!-- ══════════ CASOS EXTRAORDINARIOS ══════════ -->
+    <div class="section-header">
+      <div class="section-icon icon-extra">⚡</div>
+      <div class="section-header-text"><h2>Casos extraordinarios</h2><p>Situaciones fuera del flujo estándar</p></div>
+    </div>
+    <div class="section-rule rule-extra"></div>
+
+    <div class="template-card" id="ex1">
+      <div class="card-header card-header-extra">
+        <div class="card-num">1</div>
+        <div class="card-header-text"><h3>Upgrade Protección M3+ para adquirir Crédito Simple</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-ex1')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Opción de mejora de protección de arrendamiento</div>
+      <div class="card-body" id="body-ex1">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Es posible realizar la mejora de tu protección MLegal a una protección M3 o M12 para poder acceder al Adelanto de Renta / Crédito Simple. Sin embargo, antes de proceder, es importante que consideres los siguientes puntos:</p>
+        <ul class="email-ul">
+          <li>Se deberá llevar a cabo un Convenio Modificatorio al Contrato de Prestación de Servicios, el cual nosotros mismos expedimos para su posterior firma de manera electrónica.</li>
+          <li>El costo de nuestras protecciones M3 y M12 es superior al de la protección MLegal, por lo que se deberá cubrir la diferencia entre ambos productos. Dicho monto te será confirmado una vez que estés de acuerdo con realizar el cambio.</li>
+          <li>La mejora en la protección de arrendamiento <strong>no garantiza</strong> la aprobación del Adelanto de Renta / Crédito Simple solicitado, ya que este producto está sujeto a criterios de evaluación internos y nos reservamos el derecho de autorizar cada solicitud.</li>
+          <li>En caso de que no se autorice el Adelanto de Renta / Crédito Simple, continuarás gozando de los beneficios de tu nueva protección M3 o M12, según corresponda.</li>
+        </ul>
+        <p class="email-p">Adjunto al presente correo encontrarás información detallada sobre nuestras protecciones, con el objetivo de que puedas confirmar tu interés en realizar el cambio.</p>
+        <p class="email-p">Una vez que nos confirmes, el primer paso será emitir el Convenio Modificatorio al Contrato de Prestación de Servicios y, posteriormente, iniciaremos el proceso de contratación del Crédito Simple solicitado.</p>
+        <p class="email-p">Quedo al pendiente de tu respuesta para dar inicio a las gestiones correspondientes.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="ex2">
+      <div class="card-header card-header-extra">
+        <div class="card-num">2</div>
+        <div class="card-header-text"><h3>No aplicable por MLegal (CON opción de upgrade)</h3><div class="card-recipient">👤 Cliente · Inquilino sin problemas en investigación</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-ex2')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Estado de tu solicitud de Adelanto de Rentas</div>
+      <div class="card-body" id="body-ex2">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Dando seguimiento al proceso de solicitud del Adelanto de Rentas / Crédito Simple, te informamos que uno de los requisitos indispensables para contratar nuestro producto es contar con una protección de arrendamiento M3 o superior (M6 o M12) con MoradaUno.</p>
+        <p class="email-p">Actualmente, la protección de tu arrendamiento es una protección <strong>MLegal</strong>, la cual no es elegible para contratar nuestro producto financiero.</p>
+        <p class="email-p">No obstante, con base en los resultados de la investigación de tu Arrendatario/a realizada al inicio de tu arrendamiento, queremos brindarte la posibilidad de realizar la mejora en tu protección, lo que conlleva lo siguiente:</p>
+        <ul class="email-ul">
+          <li>Realizar un Convenio Modificatorio a tu Contrato de Prestación de Servicios indicando el cambio de tu protección MLegal a una M3, M6 o M12 (según tu preferencia).</li>
+          <li>Firmar el Convenio Modificatorio de manera electrónica.</li>
+          <li>Una vez firmado el documento, podremos dar inicio al proceso de contratación del Adelanto de Rentas / Crédito Simple solicitado.</li>
+        </ul>
+        <div class="note-box">IMPORTANTE: La mejora en tu protección de arrendamiento conlleva realizar el pago de la diferencia entre los productos para ajustar al nuevo costo.</div>
+        <p class="email-p">Adjunto al presente correo encontrarás el brochure con la información y beneficios de nuestras protecciones, con el fin de que puedas elegir la que más te convenga.</p>
+        <p class="email-p">Quedamos al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="ex3">
+      <div class="card-header card-header-extra">
+        <div class="card-num">3</div>
+        <div class="card-header-text"><h3>Ya se pagó el upgrade del CPS y falta firmar</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-ex3')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Pago recibido · Pendiente firma electrónica</div>
+      <div class="card-body" id="body-ex3">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmamos la recepción de tu pago correspondiente a la mejora en la Protección de Arrendamiento contratada con MoradaUno.</p>
+        <p class="email-p">Para concluir el proceso, únicamente se encuentra pendiente la firma del Convenio Modificatorio. A continuación te compartimos la liga para completarla de manera electrónica:</p>
+        <div class="link-box">🔗 <strong>Liga de firma electrónica:</strong>&nbsp;<span class="link-var var">(Link_de_firma)</span></div>
+        <p class="email-p">Quedo al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="ex4">
+      <div class="card-header card-header-extra">
+        <div class="card-num">4</div>
+        <div class="card-header-text"><h3>Ya se firmó el CPS y falta pagar</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-ex4')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Firma registrada · Pendiente pago de mejora de protección</div>
+      <div class="card-body" id="body-ex4">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmamos que ya contamos con tu firma electrónica en el Convenio Modificatorio a tu Contrato de Prestación de Servicios.</p>
+        <p class="email-p">Para concluir el proceso, únicamente se encuentra pendiente realizar el pago correspondiente a la mejora en tu protección. A continuación te compartimos la liga de pago:</p>
+        <div class="link-box">💳 <strong>Liga de pago:</strong>&nbsp;<span class="link-var var">(Link_de_Pago)</span></div>
+        <div class="note-box">NOTA: Para que la mejora en tu protección de arrendamiento sea válida, es necesario que tanto la firma del Convenio Modificatorio como el pago correspondiente hayan sido completados.</div>
+        <p class="email-p">Quedo al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="ex5">
+      <div class="card-header card-header-extra">
+        <div class="card-num">5</div>
+        <div class="card-header-text"><h3>CM al CPS ya se firmó y pagó</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-ex5')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Mejora de protección completada</div>
+      <div class="card-body" id="body-ex5">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmamos que hemos registrado exitosamente tanto el pago del complemento a tu nueva protección de arrendamiento como la firma del Convenio Modificatorio al Contrato de Prestación de Servicios. Adjunto al presente correo encontrarás el documento completo en formato PDF.</p>
+        <p class="email-p">Con esto, procederemos a dar inicio al proceso de contratación del Adelanto de Rentas / Crédito Simple que habías solicitado originalmente. Para ello, te pedimos nos compartas los siguientes documentos para llevar a cabo el análisis de Buró de Crédito:</p>
+        <ul class="email-ul">
+          <li>INE o Pasaporte</li>
+          <li>Constancia de Situación Fiscal</li>
+          <li>Comprobante de domicilio</li>
+          <li>Autorización de Buró de Crédito <em>(documento adjunto al presente correo)</em></li>
+        </ul>
+        <div class="note-box">** El documento de Autorización de Buró debe completarse con todos los datos requeridos, firmarse en físico y hacernos llegar una fotografía o escaneo del mismo ya firmado.</div>
+        <p class="email-p">Quedamos al pendiente de tu documentación para continuar con el proceso.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <!-- ══════════ INTERNO ══════════ -->
+    <div class="section-header">
+      <div class="section-icon icon-internal">🏢</div>
+      <div class="section-header-text"><h2>Interno</h2><p>Comunicación con el equipo M1 / Mesa de Control</p></div>
+    </div>
+    <div class="section-rule rule-internal"></div>
+
+    <div class="template-card" id="in1">
+      <div class="card-header card-header-internal">
+        <div class="card-num">1</div>
+        <div class="card-header-text"><h3>Solicitud de transferencia a LL</h3><div class="card-recipient">🏢 Interno · M1 Team / Mesa de Control</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-in1')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> Solicitud de transferencia – Adelanto de Rentas – <span class="var">(Contrato)</span></div>
+      <div class="card-body" id="body-in1">
+        <p class="email-p">Buenas tardes team,</p>
+        <p class="email-p">Solicito su apoyo para realizar la transferencia del Crédito Simple / Adelanto de Renta correspondiente al contrato <span class="var">(Contrato)</span>. A continuación les comparto la información bancaria del beneficiario:</p>
+        <table class="info-table">
+          <tr><td>Beneficiario</td><td><span class="var">(nombre_beneficiario)</span></td></tr>
+          <tr><td>Banco</td><td><span class="var">(banco_beneficiario)</span></td></tr>
+          <tr><td>CLABE interbancaria</td><td><span class="var">(cuenta_clabe)</span></td></tr>
+          <tr><td>Monto a transferir</td><td><span class="var">(monto_a_transferir_a_LL) MXN</span></td></tr>
+        </table>
+        <p class="email-p">Vamos a recibir <span class="var">$(renta_de_contrato) MXN</span> por <span class="var">(meses_adelantados)</span> meses a partir del <span class="var">(día_de_pago_LL)</span> de <span class="var">(primer_mes_de_pago_LL)</span> de 2026, recuperando un total de <span class="var">$(monto_total_por_recuperar) MXN</span>.</p>
+        <p class="email-p">El contrato firmado se encuentra adjunto al presente correo.</p>
+        <p class="email-p">Quedo al pendiente ante cualquier duda.</p>
+        <p class="email-p">Saludos,</p>
+      </div>
+    </div>
+
+    <!-- ══════════ RECEPCIÓN DE PAGOS ══════════ -->
+    <div class="section-header">
+      <div class="section-icon icon-payments">💰</div>
+      <div class="section-header-text"><h2>Recepción de pagos</h2><p>Confirmación de mensualidades recibidas</p></div>
+    </div>
+    <div class="section-rule rule-payments"></div>
+
+    <div class="template-card" id="pg1">
+      <div class="card-header card-header-payments">
+        <div class="card-num">1</div>
+        <div class="card-header-text"><h3>Recepción y confirmación de mensualidad de LL</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-pg1')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Confirmación de pago mensual recibido</div>
+      <div class="card-body" id="body-pg1">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Te confirmamos la recepción del pago correspondiente a tu Adelanto de Rentas / Crédito Simple con MoradaUno.</p>
+        <table class="info-table">
+          <tr><td>Número de pago</td><td><span class="var">(número_de_pago)</span> de <span class="var">(número_de_pagos_totales)</span></td></tr>
+        </table>
+        <p class="email-p">Tu puntualidad y compromiso nos permiten continuar ofreciendo mejores condiciones y acompañarte en el cumplimiento de tus metas financieras.</p>
+        <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <!-- ══════════ PROCESO ══════════ -->
+    <div class="section-header" id="proceso">
+      <div class="section-icon icon-process">📋</div>
+      <div class="section-header-text"><h2>Proceso de Adelanto de Rentas</h2><p>Flujo completo de operación</p></div>
+    </div>
+    <div class="section-rule rule-process"></div>
+
+    <div class="process-accordion">
+      <button class="process-toggle" onclick="toggleProcess(this)">
+        📋 Ver proceso completo de Adelanto de Rentas
+        <span class="toggle-arrow">▼</span>
+      </button>
+      <div class="process-body">
+        <div class="process-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Solicitud de broker / LL</h4>
+            <p>El propietario o broker se contacta para solicitar información del producto. Inbound / team M1 da información, resuelve dudas y confirma la solicitud.</p>
+            <div class="step-sub">
+              <p>✅ Si quiere contratar → Se registra en el <a href="https://docs.google.com/spreadsheets/d/1fzPXZ1XSows0-z8RlEOciWdUUEbSBdRjnB4iVN412yc" target="_blank" style="color:var(--lila)">sheet de seguimiento</a> y se hace handoff a Portafolio (Santi V)</p>
+              <p>❌ Si no quiere contratar → No se registra el caso</p>
+            </div>
+            <p style="margin-top:8px;">Se confirman requisitos mínimos: meses a adelantar vs. vigencia del contrato, protección M3+ activa, y que el contrato no tenga problemas en portafolio.</p>
+            <p style="margin-top:6px;">Se registra cliente en Kustomer (crear cliente → actividad como Enlace → sección de correo) y se envía template de primer contacto.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Proceso de análisis a LL</h4>
+            <p>Se recibe documentación de LL → se envía template "Recepción de documentos Buró". Se solicita análisis al equipo SO.</p>
+            <div class="step-sub">
+              <p>✅ <strong>Aprobado</strong> (score mínimo 650 pts) → Se confirma al propietario y se avanza a Paso 3: Contrato</p>
+              <p>❌ <strong>No aprobado</strong> → Se envía template "No aprobación de buró" y se da oportunidad de enviar documentación adicional</p>
+              <p style="margin-left:10px;">→ Si SO aprueba con info adicional → Paso 3 | Si no aprueba → cierre del caso</p>
+            </div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Contrato</h4>
+            <p>Se genera contrato de Crédito Simple con el generador de Retool. Se comparte al LL con template "Primera revisión de contrato" y se espera VoBo.</p>
+            <div class="step-sub">
+              <p>✅ VoBo confirmado → Paso 4: Firma</p>
+              <p>🔄 Solicitan cambios o tienen dudas → Se resuelven y se avanza a Paso 4</p>
+            </div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Firma de contrato</h4>
+            <p>Se solicita carga del contrato a firma electrónica (siempre quedar como "observador"). Se reciben ligas y se envía al LL con template "Listo para firmar".</p>
+            <div class="step-sub">
+              <p>Una vez firmado por LL → Se solicita liberación del contrato: Karla valida identidad del LL y libera con poderosa de Diego</p>
+            </div>
+            <p style="margin-top:8px;">Se descarga PDF del contrato firmado, se confirma al LL con template "Compleción de firma" y se carga a la carpeta de Drive correspondiente.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Transferencia a LL</h4>
+            <p>Se envía template "Solicitud de transferencia" a Mesa de Control con contrato firmado adjunto, información bancaria del LL y detalle de montos.</p>
+            <div class="step-sub">
+              <p>Mesa de Control: confirma información → realiza transferencia → comparte comprobante vía correo</p>
+            </div>
+            <p style="margin-top:8px;">Se confirma la transferencia al LL con template "Confirmación de pago" adjuntando el comprobante. Se cierra la operación en Kustomer.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Cierre de operación</h4>
+            <p>Se confirma cierre a Mesa de Control. MC confirma si se paga a broker, registra datos de la operación y da cierre formal.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h4>Seguimiento – Cobro de rentas adelantadas</h4>
+            <p>Se agenda el primer pago en calendario para seguimiento mensual de cobro.</p>
+            <p style="margin-top:4px;font-size:11px;color:var(--lila);font-style:italic;">Pendiente: confirmar si se copia a alguien más (ej. Rubén de cobranza) para mayor visibilidad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function copyEmail(btn, bodyId) {
+  const el = document.getElementById(bodyId);
+  let text = '';
+  el.querySelectorAll('p.email-p').forEach(p => { text += p.innerText.trim() + '\n\n'; });
+  el.querySelectorAll('ul.email-ul li').forEach(li => { text += '• ' + li.innerText.trim() + '\n'; });
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar texto'; btn.classList.remove('copied'); }, 2200);
+  }).catch(() => {
+    btn.textContent = 'Error';
+    setTimeout(() => { btn.textContent = 'Copiar texto'; }, 2000);
+  });
+}
+
+function toggleProcess(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+window.addEventListener('scroll', () => {
+  const p = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('scrollProgress').style.width = p + '%';
+});
+
+const cards = document.querySelectorAll('.template-card[id], [id="proceso"]');
+const links = document.querySelectorAll('.nav-link[href^="#"]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(a => a.classList.remove('active'));
+      const l = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (l) l.classList.add('active');
+    }
+  });
+}, { threshold: 0.35, rootMargin: '-60px 0px -40% 0px' });
+cards.forEach(c => obs.observe(c));
+</script>
+</body>
+</html>
