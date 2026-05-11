@@ -22,6 +22,7 @@
     --section-internal: #1A3A6B;
     --section-payments: #006B5E;
     --section-process: #2E2E2E;
+    --section-collections: #8B4500;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: #F4F0F6; color: var(--near-black); font-size: 13px; line-height: 1.65; }
@@ -79,6 +80,10 @@
   .rule-internal { background: linear-gradient(to right, #1A3A6B, transparent); }
   .rule-payments { background: linear-gradient(to right, #006B5E, transparent); }
   .rule-process { background: linear-gradient(to right, #555, transparent); }
+  .hdr-collections { background: var(--section-collections); }
+  .icon-collections { background: #FFF3E0; }
+  .card-header-collections { background: var(--section-collections); }
+  .rule-collections { background: linear-gradient(to right, #8B4500, transparent); }
 
   .template-card { background: white; border-radius: 12px; border: 1px solid #e2d9e8; margin-bottom: 16px; overflow: hidden; scroll-margin-top: 68px; box-shadow: 0 1px 3px rgba(103,30,117,0.06); transition: box-shadow 0.15s; }
   .template-card:hover { box-shadow: 0 3px 12px rgba(103,30,117,0.1); }
@@ -152,7 +157,7 @@
   <div class="topbar-sep"></div>
   <div class="topbar-title">Templates · Adelanto de Rentas</div>
   <div class="topbar-spacer"></div>
-  <div class="topbar-tag">16 templates</div>
+  <div class="topbar-tag">18 templates</div>
 </div>
 
 <div class="layout">
@@ -188,6 +193,11 @@
     <div class="nav-section">
       <div class="nav-section-header hdr-payments"><div class="dot" style="background:#80E8D8"></div>Recepción de pagos</div>
       <a class="nav-link" href="#pg1"><span class="nav-num">1</span>Confirmación de mensualidad</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-header hdr-collections"><div class="dot" style="background:#FFCC88"></div>Cobranza</div>
+      <a class="nav-link" href="#cb1"><span class="nav-num">1</span>Primer aviso de atraso</a>
+      <a class="nav-link" href="#cb2"><span class="nav-num">2</span>Primer aviso — Con detalle</a>
     </div>
     <div class="nav-section">
       <div class="nav-section-header hdr-process"><div class="dot" style="background:#BBBBBB"></div>Proceso</div>
@@ -569,6 +579,50 @@
         </table>
         <p class="email-p">Tu puntualidad y compromiso nos permiten continuar ofreciendo mejores condiciones y acompañarte en el cumplimiento de tus metas financieras.</p>
         <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <!-- ══════════ COBRANZA ══════════ -->
+    <div class="section-header">
+      <div class="section-icon icon-collections">🔔</div>
+      <div class="section-header-text"><h2>Cobranza</h2><p>Avisos de atraso y seguimiento de pagos</p></div>
+    </div>
+    <div class="section-rule rule-collections"></div>
+
+    <div class="template-card" id="cb1">
+      <div class="card-header card-header-collections">
+        <div class="card-num">1</div>
+        <div class="card-header-text"><h3>Primer aviso de atraso</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-cb1')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Recordatorio de pago pendiente · Crédito Simple</div>
+      <div class="card-body" id="body-cb1">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Esperamos que te encuentres bien. Nos permitimos ponernos en contacto contigo para recordarte que, de acuerdo con los términos del Contrato de Crédito Simple / Adelanto de Rentas que tienes con nosotros, existe un pago con vencimiento el <span class="var">(Fecha_Vencimiento)</span> que aún no hemos podido identificar como recibido.</p>
+        <p class="email-p">Entendemos que en ocasiones este tipo de situaciones pueden presentarse por un descuido o por algún contratiempo, por lo que te invitamos a regularizar tu situación a la brevedad mediante cualquiera de los medios de pago disponibles.</p>
+        <p class="email-p">Si ya realizaste el pago, te pedimos de favor compartir el comprobante correspondiente para registrarlo en nuestro sistema y aclarar el estatus de tu cuenta.</p>
+        <p class="email-p">Quedo al pendiente ante cualquier duda o comentario.</p>
+        <p class="email-p">Saludos cordiales,</p>
+      </div>
+    </div>
+
+    <div class="template-card" id="cb2">
+      <div class="card-header card-header-collections">
+        <div class="card-num">2</div>
+        <div class="card-header-text"><h3>Primer aviso de atraso — Con detalle del adeudo</h3><div class="card-recipient">👤 Cliente · Propietario / LL</div></div>
+        <button class="copy-btn" onclick="copyEmail(this,'body-cb2')">Copiar texto</button>
+      </div>
+      <div class="subject-bar"><span class="subject-label">Asunto</span> MoradaUno – <span class="var">(Contrato)</span> – Aviso de saldo pendiente · Crédito Simple</div>
+      <div class="card-body" id="body-cb2">
+        <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
+        <p class="email-p">Por medio del presente, te informamos que tu cuenta presenta un saldo vencido correspondiente al período <span class="var">(Período_de_Pago)</span>, con fecha de vencimiento el <span class="var">(Fecha_Vencimiento)</span>, por un monto de:</p>
+        <table class="info-table">
+          <tr><td>Monto vencido</td><td><span class="var">$(Monto) MXN</span></td></tr>
+        </table>
+        <p class="email-p">Te solicitamos atender este aviso a la brevedad para evitar la generación de cargos adicionales por mora, conforme a lo estipulado en tu contrato. Para cualquier aclaración sobre el monto o la fecha indicados, con gusto podemos revisarlo juntos.</p>
+        <p class="email-p">Si ya realizaste tu pago, te agradeceríamos compartir el comprobante para actualizar el estatus de tu cuenta en nuestro sistema.</p>
+        <p class="email-p">Quedamos al pendiente ante cualquier duda o comentario.</p>
         <p class="email-p">Saludos cordiales,</p>
       </div>
     </div>
