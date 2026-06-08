@@ -115,12 +115,11 @@
   .email-ul { margin: 6px 0 10px 18px; }
   .email-ul li { font-size: 12.5px; line-height: 1.7; color: var(--near-black); margin-bottom: 3px; }
 
-  .info-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; border-radius: 8px; overflow: hidden; border: 1px solid #EDE4F0; }
-  .info-table tr:nth-child(odd) td { background: #FAF7FB; }
-  .info-table tr:nth-child(even) td { background: white; }
-  .info-table td { padding: 7px 12px; border: 1px solid #EDE4F0; }
-  .info-table td:first-child { font-weight: 600; color: var(--near-black); width: 42%; }
-  .info-table td:last-child { color: var(--lila); font-style: italic; }
+  .field-block { background: #FAF7FB; border: 1px solid #EDE4F0; border-radius: 8px; margin: 10px 0; overflow: hidden; }
+  .field-row { padding: 7px 12px; margin-bottom: 0 !important; border-bottom: 1px solid #EDE4F0; font-size: 12.5px !important; }
+  .field-row:last-child { border-bottom: none; }
+  .field-row:nth-child(even) { background: white; }
+  .field-row strong { color: var(--near-black); font-weight: 600; margin-right: 4px; }
 
   .note-box { background: #FAF7FB; border-left: 3px solid var(--lavender); padding: 8px 12px; font-size: 11.5px; color: var(--dark-gray); font-style: italic; margin: 8px 0; border-radius: 0 6px 6px 0; line-height: 1.6; }
   .warning-box { background: #FFF8E6; border: 1.5px solid #E6A800; border-radius: 8px; padding: 10px 14px; font-size: 12.5px; font-weight: 600; color: #7A5500; margin: 10px 0; }
@@ -229,12 +228,12 @@
         <p class="email-p">Estimado/a <span class="var">(nombre_propietario)</span>,</p>
         <p class="email-p">Mi nombre es <span class="var">(nombre del agente)</span> y me comunico de parte de MoradaUno con el propósito de dar inicio al proceso de contratación del Adelanto de Renta que solicitaste, correspondiente al contrato de arrendamiento número <span class="var">(Contrato)</span>.</p>
         <p class="email-p">A continuación te confirmo los datos de tu solicitud:</p>
-        <table class="info-table">
-          <tr><td>Meses solicitados</td><td><span class="var">(número de meses)</span></td></tr>
-          <tr><td>Monto de renta del contrato</td><td><span class="var">(renta) MXN</span></td></tr>
-          <tr><td>Monto total</td><td><span class="var">(número de meses × renta) MXN</span></td></tr>
-          <tr><td>Monto total a transferir *</td><td><span class="var">(monto_a_transferir) MXN</span></td></tr>
-        </table>
+        <div class="field-block">
+          <p class="email-p field-row"><strong>Meses solicitados:</strong> <span class="var">(número de meses)</span></p>
+          <p class="email-p field-row"><strong>Monto de renta del contrato:</strong> <span class="var">(renta) MXN</span></p>
+          <p class="email-p field-row"><strong>Monto total:</strong> <span class="var">(número de meses × renta) MXN</span></p>
+          <p class="email-p field-row"><strong>Monto total a transferir *:</strong> <span class="var">(monto_a_transferir) MXN</span></p>
+        </div>
         <div class="note-box">* El Monto Total a Transferir corresponde al Monto Total con un descuento del 16% por concepto de comisión por apertura.</div>
         <p class="email-p">Como primer paso para continuar con el proceso de contratación, es necesario realizar una validación crediticia, para la cual requerimos que nos compartas los siguientes documentos:</p>
         <ul class="email-ul">
@@ -363,11 +362,11 @@
         <p class="email-p">Estimado/a <span class="var">(nombre_LL)</span>,</p>
         <p class="email-p">Te confirmamos que la transferencia correspondiente a la contratación del Crédito Simple / Adelanto de Rentas relacionado a tu contrato <span class="var">(Contrato)</span> fue realizada el día de hoy. Encontrarás el comprobante de pago adjunto al presente correo.</p>
         <p class="email-p">A partir de este momento no es necesario realizar ninguna acción adicional de tu parte. Te recordamos las condiciones de pago estipuladas en el contrato:</p>
-        <table class="info-table">
-          <tr><td>Día de pago mensual</td><td><span class="var">día (xx) de cada mes</span></td></tr>
-          <tr><td>Fecha del primer pago</td><td><span class="var">(fecha_primer_pago)</span></td></tr>
-          <tr><td>Monto total a recuperar</td><td><span class="var">$(monto_total_sin_comisión_por_apertura) MXN</span></td></tr>
-        </table>
+        <div class="field-block">
+          <p class="email-p field-row"><strong>Día de pago mensual:</strong> <span class="var">día (xx) de cada mes</span></p>
+          <p class="email-p field-row"><strong>Fecha del primer pago:</strong> <span class="var">(fecha_primer_pago)</span></p>
+          <p class="email-p field-row"><strong>Monto total a recuperar:</strong> <span class="var">$(monto_total_sin_comisión_por_apertura) MXN</span></p>
+        </div>
         <div class="warning-box">⚠️ Es importante cumplir con las fechas de pago estipuladas en el contrato para evitar cargos adicionales por pago tardío.</div>
         <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
         <p class="email-p">Saludos cordiales,</p>
@@ -544,12 +543,12 @@
       <div class="card-body" id="body-in1">
         <p class="email-p">Buenas tardes team,</p>
         <p class="email-p">Solicito su apoyo para realizar la transferencia del Crédito Simple / Adelanto de Renta correspondiente al contrato <span class="var">(Contrato)</span>. A continuación les comparto la información bancaria del beneficiario:</p>
-        <table class="info-table">
-          <tr><td>Beneficiario</td><td><span class="var">(nombre_beneficiario)</span></td></tr>
-          <tr><td>Banco</td><td><span class="var">(banco_beneficiario)</span></td></tr>
-          <tr><td>CLABE interbancaria</td><td><span class="var">(cuenta_clabe)</span></td></tr>
-          <tr><td>Monto a transferir</td><td><span class="var">(monto_a_transferir_a_LL) MXN</span></td></tr>
-        </table>
+        <div class="field-block">
+          <p class="email-p field-row"><strong>Beneficiario:</strong> <span class="var">(nombre_beneficiario)</span></p>
+          <p class="email-p field-row"><strong>Banco:</strong> <span class="var">(banco_beneficiario)</span></p>
+          <p class="email-p field-row"><strong>CLABE interbancaria:</strong> <span class="var">(cuenta_clabe)</span></p>
+          <p class="email-p field-row"><strong>Monto a transferir:</strong> <span class="var">(monto_a_transferir_a_LL) MXN</span></p>
+        </div>
         <p class="email-p">Vamos a recibir <span class="var">$(renta_de_contrato) MXN</span> por <span class="var">(meses_adelantados)</span> meses a partir del <span class="var">(día_de_pago_LL)</span> de <span class="var">(primer_mes_de_pago_LL)</span> de 2026, recuperando un total de <span class="var">$(monto_total_por_recuperar) MXN</span>.</p>
         <p class="email-p">El contrato firmado se encuentra adjunto al presente correo.</p>
         <p class="email-p">Quedo al pendiente ante cualquier duda.</p>
@@ -574,9 +573,9 @@
       <div class="card-body" id="body-pg1">
         <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
         <p class="email-p">Te confirmamos la recepción del pago correspondiente a tu Adelanto de Rentas / Crédito Simple con MoradaUno.</p>
-        <table class="info-table">
-          <tr><td>Número de pago</td><td><span class="var">(número_de_pago)</span> de <span class="var">(número_de_pagos_totales)</span></td></tr>
-        </table>
+        <div class="field-block">
+          <p class="email-p field-row"><strong>Número de pago:</strong> <span class="var">(número_de_pago)</span> de <span class="var">(número_de_pagos_totales)</span></p>
+        </div>
         <p class="email-p">Tu puntualidad y compromiso nos permiten continuar ofreciendo mejores condiciones y acompañarte en el cumplimiento de tus metas financieras.</p>
         <p class="email-p">Quedamos a tu disposición ante cualquier duda o comentario.</p>
         <p class="email-p">Saludos cordiales,</p>
@@ -617,9 +616,9 @@
       <div class="card-body" id="body-cb2">
         <p class="email-p">Estimado/a <span class="var">(Nombre_LL)</span>,</p>
         <p class="email-p">Por medio del presente, te informamos que tu cuenta presenta un saldo vencido correspondiente al período <span class="var">(Período_de_Pago)</span>, con fecha de vencimiento el <span class="var">(Fecha_Vencimiento)</span>, por un monto de:</p>
-        <table class="info-table">
-          <tr><td>Monto vencido</td><td><span class="var">$(Monto) MXN</span></td></tr>
-        </table>
+        <div class="field-block">
+          <p class="email-p field-row"><strong>Monto vencido:</strong> <span class="var">$(Monto) MXN</span></p>
+        </div>
         <p class="email-p">Te solicitamos atender este aviso a la brevedad para evitar la generación de cargos adicionales por mora, conforme a lo estipulado en tu contrato. Para cualquier aclaración sobre el monto o la fecha indicados, con gusto podemos revisarlo juntos.</p>
         <p class="email-p">Si ya realizaste tu pago, te agradeceríamos compartir el comprobante para actualizar el estatus de tu cuenta en nuestro sistema.</p>
         <p class="email-p">Quedamos al pendiente ante cualquier duda o comentario.</p>
@@ -723,8 +722,15 @@
 function copyEmail(btn, bodyId) {
   const el = document.getElementById(bodyId);
   let text = '';
-  el.querySelectorAll('p.email-p').forEach(p => { text += p.innerText.trim() + '\n\n'; });
-  el.querySelectorAll('ul.email-ul li').forEach(li => { text += '• ' + li.innerText.trim() + '\n'; });
+  el.querySelectorAll('p.email-p, ul.email-ul').forEach(node => {
+    if (node.tagName === 'UL') {
+      node.querySelectorAll('li').forEach(li => { text += '• ' + li.innerText.trim() + '\n'; });
+      text += '\n';
+    } else {
+      const t = node.innerText.trim();
+      if (t) text += t + '\n\n';
+    }
+  });
   navigator.clipboard.writeText(text.trim()).then(() => {
     btn.textContent = '✓ Copiado';
     btn.classList.add('copied');
